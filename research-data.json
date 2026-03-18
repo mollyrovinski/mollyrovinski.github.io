@@ -1,8 +1,29 @@
 {
+  "journalArticles": [
+    {
+      "title": "Collective Action in the Sanctuary Movement: Polycentric Protection of Central American Asylum Seekers",
+      "authors": "with Nathan Goodman and Karla Segovia",
+      "venue": "Constitutional Political Economy",
+      "date": "November 2025"
+    },
+    {
+      "title": "Fractured Families: The Unintended Consequences of Immigration Enforcement for Families",
+      "authors": "with Nathan Goodman and Karla Segovia",
+      "venue": "Forthcoming in Cosmos + Taxis"
+    }
+  ],
   "workingPapers": [
     {
       "title": "Immigration Restrictions as Non-Comprehensive Planning",
       "authors": "with Nathan Goodman and Karla Segovia"
+    },
+    {
+      "title": "Immigration Law Undermines the Rule of Law",
+      "authors": "with Nathan Goodman"
+    },
+    {
+      "title": "Viral Narratives: Propaganda in the Covid-19 Pandemic",
+      "authors": "with Christopher Coyne and Abigail Hall Blanco"
     }
   ],
   "worksInProgress": [],
