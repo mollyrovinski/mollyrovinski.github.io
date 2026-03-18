@@ -1,60 +1,28 @@
 :root {
-    --samosa-cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzOCIgaGVpZ2h0PSIzOCIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2Ftb3NhRmlsbCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmNWQyOGMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZDQ5NDNmIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cGF0aCBkPSJNNiA2IEw0MSAyNCBMMTMgNDIgUTkgMzUgOCAyOCBRNiAxOCA2IDYgWiIgZmlsbD0idXJsKCNzYW1vc2FGaWxsKSIgc3Ryb2tlPSIjOGY1YTFmIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8cGF0aCBkPSJNMTIgMTYgUTIwIDE3IDI1IDIyIiBmaWxsPSJub25lIiBzdHJva2U9IiNiNjc4MmQiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8cGF0aCBkPSJNMTEgMjQgUTIwIDI3IDIzIDMzIiBmaWxsPSJub25lIiBzdHJva2U9IiNiNjc4MmQiIHN0cm9rZS13aWR0aD0iMS40IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8Y2lyY2xlIGN4PSIxNyIgY3k9IjIwIiByPSIxLjIiIGZpbGw9IiM5ZjY0MjQiLz4KICA8Y2lyY2xlIGN4PSIxOSIgY3k9IjI5IiByPSIxLjIiIGZpbGw9IiM5ZjY0MjQiLz4KPC9zdmc+Cg==') 5 5;
-
-    --primary-color: #8B4513;
-    --primary-dark: #5D2F0D;
-    --accent-color: #D4A574;
-    --text-dark: #2C1810;
-    --text-medium: #5C4A42;
-    --text-light: #8A7968;
-    --bg-cream: #FDF8F3;
+    --primary-color: #568EA3;
+    --primary-dark: #2d5f75;
+    --accent-color: #89b8cc;
+    --text-dark: #1a2a3a;
+    --text-medium: #4a6070;
+    --text-light: #7a95a5;
+    --bg-cream: #F6F1D1;
     --bg-white: #FFFFFF;
-    --border-color: #E5D5C3;
-    --shadow-subtle: rgba(139, 69, 19, 0.08);
-    --shadow-medium: rgba(139, 69, 19, 0.15);
+    --border-color: #cfe0e8;
+    --shadow-subtle: rgba(86, 142, 163, 0.08);
+    --shadow-medium: rgba(86, 142, 163, 0.15);
 }
 
-/* Sage green color theme */
-[data-color="sage"] {
-    --primary-color: #5F7A61;
-    --primary-dark: #3D5340;
-    --accent-color: #A4C3A2;
-    --text-dark: #1C2B1C;
-    --text-medium: #4A5D4A;
-    --text-light: #6B7F6B;
-    --bg-cream: #F5F8F5;
-    --bg-white: #FFFFFF;
-    --border-color: #D1E0D1;
-    --shadow-subtle: rgba(95, 122, 97, 0.08);
-    --shadow-medium: rgba(95, 122, 97, 0.15);
-}
-
-/* Dark mode colors - brown theme */
+/* Dark mode colors */
 [data-theme="dark"] {
-    --primary-color: #D4A574;
-    --primary-dark: #E5C4A8;
-    --accent-color: #8B4513;
-    --text-dark: #F5EDE6;
-    --text-medium: #D4C8BC;
-    --text-light: #A89888;
-    --bg-cream: #1A1512;
-    --bg-white: #2C241E;
-    --border-color: #4A3F35;
-    --shadow-subtle: rgba(0, 0, 0, 0.2);
-    --shadow-medium: rgba(0, 0, 0, 0.3);
-}
-
-/* Dark mode colors - sage theme */
-[data-color="sage"][data-theme="dark"] {
-    --primary-color: #A4C3A2;
-    --primary-dark: #C5DBC4;
-    --accent-color: #5F7A61;
-    --text-dark: #E8F0E8;
-    --text-medium: #B8CCB8;
-    --text-light: #8AA88A;
-    --bg-cream: #121A12;
-    --bg-white: #1E291E;
-    --border-color: #354435;
+    --primary-color: #89b8cc;
+    --primary-dark: #b8d8e8;
+    --accent-color: #568EA3;
+    --text-dark: #e8f0f5;
+    --text-medium: #b8cdd8;
+    --text-light: #8aaabb;
+    --bg-cream: #0d1a20;
+    --bg-white: #162028;
+    --border-color: #2a404d;
     --shadow-subtle: rgba(0, 0, 0, 0.2);
     --shadow-medium: rgba(0, 0, 0, 0.3);
 }
@@ -95,8 +63,7 @@
     color: var(--text-medium);
 }
 
-.font-select,
-.color-select {
+.font-select {
     padding: 0.35rem 0.75rem;
     border: 1px solid var(--border-color);
     border-radius: 4px;
@@ -106,8 +73,7 @@
     cursor: pointer;
 }
 
-.font-select:focus,
-.color-select:focus {
+.font-select:focus {
     outline: none;
     border-color: var(--primary-color);
 }
@@ -139,19 +105,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: var(--samosa-cursor), auto !important;
-}
-
-button,
-a,
-select,
-label,
-[role="button"] {
-    cursor: var(--samosa-cursor), pointer;
 }
 
 body {
-    cursor: var(--samosa-cursor), auto;
     font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
     font-size: 1.125rem;
     color: var(--text-dark);
@@ -177,7 +133,7 @@ body {
 }
 
 [data-theme="dark"] .nav-container {
-    background: rgba(44, 36, 30, 0.98);
+    background: rgba(22, 32, 40, 0.98);
 }
 
 .nav-content {
@@ -330,6 +286,19 @@ body {
     width: 100%;
     height: auto;
     display: block;
+}
+
+.image-placeholder {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    border-radius: 4px;
+    font-style: italic;
 }
 
 /* Footer */
