@@ -1,30 +1,15 @@
 :root {
-    --primary-color: #568EA3;
-    --primary-dark: #2d5f75;
-    --accent-color: #89b8cc;
-    --text-dark: #1a2a3a;
-    --text-medium: #4a6070;
-    --text-light: #7a95a5;
-    --bg-cream: #F6F1D1;
+    --primary-color: #5BAEC7;
+    --primary-dark: #3A8CA8;
+    --accent-color: #A4D4E4;
+    --text-dark: #1a2a35;
+    --text-medium: #4a6575;
+    --text-light: #7a9aaa;
+    --bg-cream: #FFFBEA;
     --bg-white: #FFFFFF;
-    --border-color: #cfe0e8;
-    --shadow-subtle: rgba(86, 142, 163, 0.08);
-    --shadow-medium: rgba(86, 142, 163, 0.15);
-}
-
-/* Dark mode colors */
-[data-theme="dark"] {
-    --primary-color: #89b8cc;
-    --primary-dark: #b8d8e8;
-    --accent-color: #568EA3;
-    --text-dark: #e8f0f5;
-    --text-medium: #b8cdd8;
-    --text-light: #8aaabb;
-    --bg-cream: #0d1a20;
-    --bg-white: #162028;
-    --border-color: #2a404d;
-    --shadow-subtle: rgba(0, 0, 0, 0.2);
-    --shadow-medium: rgba(0, 0, 0, 0.3);
+    --border-color: #C5E4EF;
+    --shadow-subtle: rgba(91, 174, 199, 0.08);
+    --shadow-medium: rgba(91, 174, 199, 0.15);
 }
 
 /* Font families */
