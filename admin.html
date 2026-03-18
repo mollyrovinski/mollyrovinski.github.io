@@ -603,6 +603,7 @@
                     <label for="entry-type">Entry Type *</label>
                     <select id="entry-type" required onchange="updateFormFields()">
                         <option value="">Select type...</option>
+                        <option value="journalArticles">Peer-Reviewed Journal Article</option>
                         <option value="policyPapers">Policy Paper</option>
                         <option value="bookReviews">Book Review</option>
                         <option value="workingPapers">Working Paper</option>
@@ -710,6 +711,7 @@
                 <label for="category-filter">Filter by category:</label>
                 <select id="category-filter" onchange="renderEntries()">
                     <option value="all">All Categories</option>
+                    <option value="journalArticles">Peer-Reviewed Journal Articles</option>
                     <option value="policyPapers">Policy Papers</option>
                     <option value="bookReviews">Book Reviews</option>
                     <option value="workingPapers">Working Papers</option>
@@ -733,6 +735,7 @@
     const ADMIN_PASSWORD = 'molly2025';
 
     const CATEGORY_LABELS = {
+        journalArticles: 'Peer-Reviewed Journal Articles',
         policyPapers: 'Policy Papers',
         bookReviews: 'Book Reviews',
         workingPapers: 'Working Papers',
@@ -1105,6 +1108,13 @@
         document.getElementById('url-group').classList.remove('hidden');
 
         switch(type) {
+            case 'journalArticles':
+                document.querySelector('label[for="venue"]').textContent = 'Journal Name';
+                document.getElementById('venue').placeholder = 'e.g., Constitutional Political Economy';
+                document.querySelector('label[for="date"]').textContent = 'Date / Volume';
+                document.getElementById('date').placeholder = 'e.g., November 2025';
+                document.getElementById('abstract-group').classList.remove('hidden');
+                break;
             case 'policyPapers':
                 document.getElementById('pdf-group').classList.remove('hidden');
                 document.getElementById('abstract-group').classList.remove('hidden');
@@ -1257,7 +1267,7 @@
         }
 
         const abstract = document.getElementById('abstract').value;
-        if (abstract && ['policyPapers', 'workingPapers'].includes(type)) {
+        if (abstract && ['journalArticles', 'policyPapers', 'workingPapers'].includes(type)) {
             entry.abstract = abstract;
         }
 
