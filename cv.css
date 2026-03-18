@@ -29,15 +29,11 @@
     background: var(--primary-dark);
 }
 
-.cv-image {
-    margin-top: 2rem;
-    text-align: center;
-}
-
-.cv-image img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
+.cv-note {
+    margin-top: 1rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-style: italic;
 }
 
 /* Responsive Design */
