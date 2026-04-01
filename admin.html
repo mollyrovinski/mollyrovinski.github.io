@@ -584,8 +584,9 @@
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('add')">Add New Entry</button>
-            <button class="tab" onclick="switchTab('manage')">Manage Entries</button>
+            <button class="tab active" id="btn-add" onclick="switchTab('add')">Add New Entry</button>
+            <button class="tab" id="btn-manage" onclick="switchTab('manage')">Manage Entries</button>
+            <button class="tab" id="btn-teaching" onclick="switchTab('teaching')">Teaching</button>
         </div>
 
         <!-- Add/Edit Tab -->
@@ -608,7 +609,7 @@
                         <option value="bookReviews">Book Review</option>
                         <option value="workingPapers">Working Paper</option>
                         <option value="worksInProgress">Work in Progress</option>
-                        <option value="popularArticles">Popular Article</option>
+                        <option value="popularArticles">Popular Writing</option>
                         <option value="conferences">Conference</option>
                     </select>
                 </div>
@@ -716,13 +717,52 @@
                     <option value="bookReviews">Book Reviews</option>
                     <option value="workingPapers">Working Papers</option>
                     <option value="worksInProgress">Works in Progress</option>
-                    <option value="popularArticles">Popular Articles</option>
+                    <option value="popularArticles">Popular Writing</option>
                     <option value="conferences">Conferences</option>
                 </select>
             </div>
 
             <div id="entries-container">
                 <p style="color: var(--text-medium);">Loading entries...</p>
+            </div>
+        </div>
+
+        <!-- Teaching Tab -->
+        <div id="tab-teaching" class="tab-content">
+            <div id="teaching-edit-banner" class="edit-mode-banner hidden">
+                <span>Editing: <span id="teaching-edit-title"></span></span>
+                <button class="btn btn-secondary btn-small" onclick="cancelTeachingEdit()">Cancel Edit</button>
+            </div>
+
+            <form class="admin-form" id="teaching-form" onsubmit="handleTeachingSubmit(event)">
+                <div class="form-group">
+                    <label for="teaching-course">Course *</label>
+                    <input type="text" id="teaching-course" required placeholder="e.g., ECON 380: Economies in Transition">
+                </div>
+                <div class="form-group">
+                    <label for="teaching-institution">Institution *</label>
+                    <input type="text" id="teaching-institution" required placeholder="e.g., George Mason University">
+                </div>
+                <div class="form-group">
+                    <label for="teaching-role">Role</label>
+                    <input type="text" id="teaching-role" placeholder="e.g., TA to John Smith">
+                </div>
+                <div class="form-group">
+                    <label for="teaching-dates">Term(s)</label>
+                    <input type="text" id="teaching-dates" placeholder="e.g., Fall 2025, Spring 2026">
+                </div>
+                <div id="teaching-form-message"></div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-success" id="teaching-publish-btn" disabled>Publish to GitHub</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetTeachingForm()">Reset</button>
+                </div>
+            </form>
+
+            <div style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem; color: var(--text-dark);">Current Teaching Entries <span id="teaching-count" class="count"></span></h3>
+                <div id="teaching-entries-container">
+                    <p style="color: var(--text-medium);">Loading&hellip;</p>
+                </div>
             </div>
         </div>
     </main>
@@ -740,7 +780,7 @@
         bookReviews: 'Book Reviews',
         workingPapers: 'Working Papers',
         worksInProgress: 'Works in Progress',
-        popularArticles: 'Popular Articles',
+        popularArticles: 'Popular Writing',
         conferences: 'Conferences'
     };
 
@@ -777,13 +817,10 @@
     function switchTab(tab) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-        document.querySelector(`.tab:nth-child(${tab === 'add' ? 1 : 2})`).classList.add('active');
-        document.getElementById(`tab-${tab}`).classList.add('active');
-
-        if (tab === 'manage') {
-            renderEntries();
-        }
+        document.getElementById('btn-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+        if (tab === 'manage') renderEntries();
+        if (tab === 'teaching') renderTeachingEntries();
     }
 
     // GitHub Token Management
@@ -835,15 +872,18 @@
     function updateGitHubStatus(connected, username = '') {
         const statusBadge = document.getElementById('github-status');
         const publishBtn = document.getElementById('publish-btn');
+        const teachingPublishBtn = document.getElementById('teaching-publish-btn');
 
         if (connected) {
             statusBadge.textContent = `Connected as ${username}`;
             statusBadge.className = 'status-badge status-connected';
             publishBtn.disabled = false;
+            if (teachingPublishBtn) teachingPublishBtn.disabled = false;
         } else {
             statusBadge.textContent = 'Not Connected';
             statusBadge.className = 'status-badge status-disconnected';
             publishBtn.disabled = true;
+            if (teachingPublishBtn) teachingPublishBtn.disabled = true;
         }
     }
 
@@ -1486,6 +1526,228 @@
         document.getElementById('output-section').classList.add('hidden');
         document.getElementById('form-message').style.display = 'none';
         updateFormFields();
+    }
+
+    // ─── Teaching Tab ───────────────────────────────────────────────────────────
+
+    let teachingEditMode = false;
+    let teachingOriginalCourse = null;
+
+    function renderTeachingEntries() {
+        const container = document.getElementById('teaching-entries-container');
+        const countEl = document.getElementById('teaching-count');
+        const teaching = (researchData && researchData.teaching) || [];
+
+        if (countEl) countEl.textContent = `(${teaching.length})`;
+
+        if (teaching.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-medium);">No teaching entries yet.</p>';
+            return;
+        }
+
+        let html = '';
+        teaching.forEach((entry, index) => {
+            const meta = [entry.institution, entry.role, entry.dates].filter(Boolean).join(' | ');
+            html += `
+                <div class="entry-card">
+                    <div class="entry-info">
+                        <div class="entry-title">${entry.course || ''}</div>
+                        <div class="entry-meta">${meta}</div>
+                    </div>
+                    <div class="entry-actions">
+                        <button class="btn btn-warning btn-small" onclick="editTeachingEntry(${index})">Edit</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteTeachingEntry(${index})">Delete</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function editTeachingEntry(index) {
+        const entry = (researchData && researchData.teaching) ? researchData.teaching[index] : null;
+        if (!entry) return;
+
+        teachingEditMode = true;
+        teachingOriginalCourse = entry.course;
+
+        document.getElementById('teaching-edit-banner').classList.remove('hidden');
+        document.getElementById('teaching-edit-title').textContent = (entry.course || '').substring(0, 60);
+        document.getElementById('teaching-publish-btn').textContent = 'Update Entry';
+
+        document.getElementById('teaching-course').value = entry.course || '';
+        document.getElementById('teaching-institution').value = entry.institution || '';
+        document.getElementById('teaching-role').value = entry.role || '';
+        document.getElementById('teaching-dates').value = entry.dates || '';
+
+        document.getElementById('teaching-form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cancelTeachingEdit() {
+        teachingEditMode = false;
+        teachingOriginalCourse = null;
+        document.getElementById('teaching-edit-banner').classList.add('hidden');
+        document.getElementById('teaching-publish-btn').textContent = 'Publish to GitHub';
+        resetTeachingForm();
+    }
+
+    function resetTeachingForm() {
+        document.getElementById('teaching-form').reset();
+        const msgDiv = document.getElementById('teaching-form-message');
+        msgDiv.style.display = 'none';
+    }
+
+    function showTeachingMessage(message, type) {
+        const div = document.getElementById('teaching-form-message');
+        div.className = type === 'error' ? 'error-message' : 'success-message';
+        div.textContent = message;
+        div.style.display = 'block';
+        if (type === 'success') {
+            setTimeout(() => { div.style.display = 'none'; }, 5000);
+        }
+    }
+
+    async function handleTeachingSubmit(event) {
+        event.preventDefault();
+
+        const token = getGitHubToken();
+        if (!token) {
+            showTeachingMessage('Please connect your GitHub account first.', 'error');
+            return;
+        }
+
+        const publishBtn = document.getElementById('teaching-publish-btn');
+        const originalText = publishBtn.textContent;
+        publishBtn.innerHTML = '<span class="loading-spinner"></span>' + (teachingEditMode ? 'Updating...' : 'Publishing...');
+        publishBtn.disabled = true;
+
+        const entry = {
+            course: document.getElementById('teaching-course').value.trim(),
+            institution: document.getElementById('teaching-institution').value.trim()
+        };
+        const role = document.getElementById('teaching-role').value.trim();
+        if (role) entry.role = role;
+        const dates = document.getElementById('teaching-dates').value.trim();
+        if (dates) entry.dates = dates;
+
+        try {
+            const fileResponse = await fetch(
+                `https://api.github.com/repos/${GITHUB_REPO}/contents/${FILE_PATH}?ref=${GITHUB_BRANCH}`,
+                { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } }
+            );
+            if (!fileResponse.ok) throw new Error('Failed to fetch research data from GitHub');
+
+            const fileData = await fileResponse.json();
+            const currentContent = JSON.parse(atob(fileData.content));
+            if (!currentContent.teaching) currentContent.teaching = [];
+
+            if (teachingEditMode) {
+                const idx = currentContent.teaching.findIndex(e => e.course === teachingOriginalCourse);
+                if (idx === -1) throw new Error('Could not find the original entry. Please refresh and try again.');
+                currentContent.teaching[idx] = entry;
+            } else {
+                currentContent.teaching.unshift(entry);
+            }
+
+            const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(currentContent, null, 2))));
+
+            const commitResponse = await fetch(
+                `https://api.github.com/repos/${GITHUB_REPO}/contents/${FILE_PATH}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `${teachingEditMode ? 'Update' : 'Add'} teaching entry: ${entry.course.substring(0, 50)}`,
+                        content: updatedContent,
+                        sha: fileData.sha,
+                        branch: GITHUB_BRANCH
+                    })
+                }
+            );
+
+            if (!commitResponse.ok) {
+                const err = await commitResponse.json();
+                throw new Error(err.message || 'Failed to commit to GitHub');
+            }
+
+            researchData = currentContent;
+            showTeachingMessage(
+                `Successfully ${teachingEditMode ? 'updated' : 'added'} "${entry.course}"! Changes will be live shortly.`,
+                'success'
+            );
+            setTimeout(() => {
+                cancelTeachingEdit();
+                renderTeachingEntries();
+            }, 2000);
+
+        } catch (error) {
+            showTeachingMessage(`Error: ${error.message}`, 'error');
+        } finally {
+            publishBtn.textContent = originalText;
+            publishBtn.disabled = !getGitHubToken();
+        }
+    }
+
+    async function deleteTeachingEntry(index) {
+        const teaching = (researchData && researchData.teaching) || [];
+        const entry = teaching[index];
+        if (!entry) return;
+
+        if (!confirm(`Delete "${entry.course}"?`)) return;
+
+        const token = getGitHubToken();
+        if (!token) { alert('Please connect your GitHub account first.'); return; }
+
+        try {
+            const fileResponse = await fetch(
+                `https://api.github.com/repos/${GITHUB_REPO}/contents/${FILE_PATH}?ref=${GITHUB_BRANCH}`,
+                { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } }
+            );
+            if (!fileResponse.ok) throw new Error('Failed to fetch research data from GitHub');
+
+            const fileData = await fileResponse.json();
+            const currentContent = JSON.parse(atob(fileData.content));
+            const idx = (currentContent.teaching || []).findIndex(e => e.course === entry.course);
+            if (idx === -1) throw new Error('Entry not found. Please refresh and try again.');
+            currentContent.teaching.splice(idx, 1);
+
+            const updatedContent = btoa(unescape(encodeURIComponent(JSON.stringify(currentContent, null, 2))));
+
+            const commitResponse = await fetch(
+                `https://api.github.com/repos/${GITHUB_REPO}/contents/${FILE_PATH}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Delete teaching entry: ${entry.course.substring(0, 50)}`,
+                        content: updatedContent,
+                        sha: fileData.sha,
+                        branch: GITHUB_BRANCH
+                    })
+                }
+            );
+
+            if (!commitResponse.ok) {
+                const err = await commitResponse.json();
+                throw new Error(err.message || 'Failed to commit');
+            }
+
+            researchData = currentContent;
+            renderTeachingEntries();
+            alert('Entry deleted successfully!');
+
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
     }
     </script>
 </body>

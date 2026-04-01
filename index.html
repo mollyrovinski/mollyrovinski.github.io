@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Molly Rovinski - Economist & Researcher</title>
+    <title>Molly Rovinski</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="research.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,6 +17,7 @@
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="research.html">Research</a></li>
+                <li><a href="teaching.html">Teaching</a></li>
                 <li><a href="cv.html">CV</a></li>
             </ul>
         </div>
@@ -25,6 +26,11 @@
     <main class="main-container">
         <section class="hero-section">
             <div class="hero-content">
+                <div class="hero-image">
+                    <div class="image-frame">
+                        <img src="rovinski_molly.png" alt="Molly Rovinski">
+                    </div>
+                </div>
                 <div class="hero-text">
                     <h1 class="hero-title">Molly Rovinski</h1>
                     <p class="hero-subtitle">PhD Student in Economics &amp; Hayek Fellow, George Mason University</p>
@@ -38,17 +44,23 @@
                         and foreign intervention, exploring how institutional and policy environments
                         shape human movement and international affairs.
                     </p>
-                    <div class="hero-links">
-                        <a href="research.html">Research</a>
-                        <a href="cv.html">CV</a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <div class="image-frame">
-                        <img src="rovinski_molly.png" alt="Molly Rovinski">
+                    <div class="hero-actions">
+                        <a href="mailto:mrovinsk@gmu.edu" class="contact-btn">Contact me</a>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <section class="recent-work-section">
+            <h2 class="home-section-heading">See my recent work:</h2>
+            <div class="recent-work-grid" id="recent-work-grid">
+                <p style="color: var(--text-light);">Loading&hellip;</p>
+            </div>
+        </section>
+
+        <section class="upcoming-conf-section" id="upcoming-conf-section" style="display:none;">
+            <h2 class="home-section-heading">Upcoming Conferences:</h2>
+            <div class="upcoming-conf-list" id="upcoming-conf-list"></div>
         </section>
     </main>
 
@@ -56,7 +68,7 @@
         <div class="footer-content">
             <div class="footer-contact">
                 <h3>Contact</h3>
-                <p class="footer-email">mrovinsk [at] gmu [dot] edu</p>
+                <p class="footer-email"><a href="mailto:mrovinsk@gmu.edu">mrovinsk@gmu.edu</a></p>
                 <div class="footer-social">
                     <a href="https://www.linkedin.com/in/molly-rovinski-46559b196/" target="_blank" aria-label="LinkedIn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -93,7 +105,6 @@
         </div>
     </aside>
 
-
     <script>
     function openConferencesPanel() {
         document.getElementById('conferences-side-panel').classList.add('is-open');
@@ -112,61 +123,118 @@
     fetch('research-data.json')
         .then(r => r.json())
         .then(data => {
-            if (!data.conferences || data.conferences.length === 0) return;
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-            const upcoming = data.conferences
+
+            // Recent work section
+            const recentWorkGrid = document.getElementById('recent-work-grid');
+            let recentHtml = '';
+
+            const recentArticle = data.journalArticles && data.journalArticles.length > 0
+                ? data.journalArticles[0] : null;
+            const recentPopular = data.popularArticles && data.popularArticles.length > 0
+                ? data.popularArticles[0] : null;
+
+            if (recentArticle) {
+                recentHtml += `
+                    <div class="recent-work-card">
+                        <div class="card-type">Recent Publication</div>
+                        <h3>${recentArticle.url
+                            ? `<a href="${recentArticle.url}" target="_blank">${recentArticle.title}</a>`
+                            : recentArticle.title}</h3>
+                        <p class="card-meta">${[recentArticle.venue, recentArticle.date].filter(Boolean).join(', ')}</p>
+                    </div>
+                `;
+            }
+
+            if (recentPopular) {
+                recentHtml += `
+                    <div class="recent-work-card">
+                        <div class="card-type">Popular Writing</div>
+                        <h3><a href="${recentPopular.url}" target="_blank">${recentPopular.title}</a></h3>
+                        <p class="card-meta">${[recentPopular.venue, recentPopular.date].filter(Boolean).join(', ')}</p>
+                    </div>
+                `;
+            }
+
+            recentWorkGrid.innerHTML = recentHtml || '<p style="color: var(--text-light);">No recent work to display yet.</p>';
+
+            // Upcoming conferences inline section
+            const upcoming = (data.conferences || [])
                 .filter(c => c.endDate && new Date(c.endDate) >= today)
                 .sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
-            const past = data.conferences
-                .filter(c => !c.endDate || new Date(c.endDate) < today)
-                .sort((a, b) => new Date(b.endDate || 0) - new Date(a.endDate || 0));
 
-            function buildConfCard(conf) {
-                const confDate = conf.date || conf.dates || '';
-                let html = `
-                    <div class="conference-item">
-                        <div class="conference-main">
-                            <span class="conference-name">${conf.name}</span>
-                            ${conf.role ? `<span class="conference-role">${conf.role}</span>` : ''}
-                        </div>
-                        <div class="conference-meta">
-                            ${conf.location ? `<span class="conference-location">${conf.location}</span>` : ''}
-                            ${conf.location && confDate ? `<span class="conference-sep">&middot;</span>` : ''}
-                            ${confDate ? `<span class="conference-date">${confDate}</span>` : ''}
-                        </div>
-                `;
-                if (conf.presentations && conf.presentations.length > 0) {
-                    html += `<div class="conf-presentations">`;
-                    conf.presentations.forEach(p => {
-                        html += `
-                            <div class="conf-pres-item">
-                                <div class="conf-pres-title">${p.title || ''}${p.coauthors ? `<span class="conf-pres-coauthors"> ${p.coauthors}</span>` : ''}</div>
-                                ${p.session ? `<div class="conf-pres-session">${p.session}</div>` : ''}
-                                ${(p.sessionDate || p.sessionTime) ? `<div class="conf-pres-time">${[p.sessionDate, p.sessionTime].filter(Boolean).join(', ')}</div>` : ''}
-                            </div>
-                        `;
-                    });
-                    html += `</div>`;
-                }
-                html += `</div>`;
-                return html;
-            }
-
-            const panelList = document.getElementById('conferences-panel-list');
-            let panelHtml = '';
             if (upcoming.length > 0) {
-                panelHtml += `<h3 class="panel-section-heading">Upcoming</h3><div class="conferences-list">`;
-                upcoming.forEach(c => { panelHtml += buildConfCard(c); });
-                panelHtml += `</div>`;
+                const confSection = document.getElementById('upcoming-conf-section');
+                const confList = document.getElementById('upcoming-conf-list');
+                let confHtml = '';
+                upcoming.forEach(c => {
+                    confHtml += `
+                        <div class="upcoming-conf-item">
+                            <span class="upcoming-conf-date">${c.date || ''}</span>
+                            <div class="upcoming-conf-details">
+                                <div class="upcoming-conf-name">${c.name}</div>
+                                ${c.location ? `<div class="upcoming-conf-location">${c.location}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                confList.innerHTML = confHtml;
+                confSection.style.display = '';
             }
-            if (past.length > 0) {
-                panelHtml += `<h3 class="panel-section-heading">Previously at</h3><div class="conferences-list">`;
-                past.forEach(c => { panelHtml += buildConfCard(c); });
-                panelHtml += `</div>`;
+
+            // Floating conferences panel (all conferences)
+            if (data.conferences && data.conferences.length > 0) {
+                const past = data.conferences
+                    .filter(c => !c.endDate || new Date(c.endDate) < today)
+                    .sort((a, b) => new Date(b.endDate || 0) - new Date(a.endDate || 0));
+
+                function buildConfCard(conf) {
+                    const confDate = conf.date || conf.dates || '';
+                    let html = `
+                        <div class="conference-item">
+                            <div class="conference-main">
+                                <span class="conference-name">${conf.name}</span>
+                                ${conf.role ? `<span class="conference-role">${conf.role}</span>` : ''}
+                            </div>
+                            <div class="conference-meta">
+                                ${conf.location ? `<span class="conference-location">${conf.location}</span>` : ''}
+                                ${conf.location && confDate ? `<span class="conference-sep">&middot;</span>` : ''}
+                                ${confDate ? `<span class="conference-date">${confDate}</span>` : ''}
+                            </div>
+                    `;
+                    if (conf.presentations && conf.presentations.length > 0) {
+                        html += `<div class="conf-presentations">`;
+                        conf.presentations.forEach(p => {
+                            html += `
+                                <div class="conf-pres-item">
+                                    <div class="conf-pres-title">${p.title || ''}${p.coauthors ? `<span class="conf-pres-coauthors"> ${p.coauthors}</span>` : ''}</div>
+                                    ${p.session ? `<div class="conf-pres-session">${p.session}</div>` : ''}
+                                    ${(p.sessionDate || p.sessionTime) ? `<div class="conf-pres-time">${[p.sessionDate, p.sessionTime].filter(Boolean).join(', ')}</div>` : ''}
+                                </div>
+                            `;
+                        });
+                        html += `</div>`;
+                    }
+                    html += `</div>`;
+                    return html;
+                }
+
+                const panelList = document.getElementById('conferences-panel-list');
+                let panelHtml = '';
+                if (upcoming.length > 0) {
+                    panelHtml += `<h3 class="panel-section-heading">Upcoming</h3><div class="conferences-list">`;
+                    upcoming.forEach(c => { panelHtml += buildConfCard(c); });
+                    panelHtml += `</div>`;
+                }
+                if (past.length > 0) {
+                    panelHtml += `<h3 class="panel-section-heading">Previously at</h3><div class="conferences-list">`;
+                    past.forEach(c => { panelHtml += buildConfCard(c); });
+                    panelHtml += `</div>`;
+                }
+                panelList.innerHTML = panelHtml;
+                document.getElementById('conferences-float-btn').hidden = false;
             }
-            panelList.innerHTML = panelHtml;
-            document.getElementById('conferences-float-btn').hidden = false;
         });
     </script>
 </body>

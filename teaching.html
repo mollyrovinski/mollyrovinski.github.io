@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV - Molly Rovinski</title>
+    <title>Teaching - Molly Rovinski</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="cv.css">
+    <link rel="stylesheet" href="research.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=STIX+Two+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,29 +17,19 @@
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="research.html">Research</a></li>
-                <li><a href="teaching.html">Teaching</a></li>
-                <li><a href="cv.html" class="active">CV</a></li>
+                <li><a href="teaching.html" class="active">Teaching</a></li>
+                <li><a href="cv.html">CV</a></li>
             </ul>
         </div>
     </nav>
 
-    <main class="main-container cv-container">
+    <main class="main-container">
         <header class="page-header">
-            <h1>Curriculum Vitae</h1>
+            <h1>Teaching</h1>
         </header>
 
-        <div class="cv-content">
-            <div class="cv-download-section">
-                <a href="MRovinski_CV.pdf" class="cv-download-btn" target="_blank">
-                    Download Full CV (PDF)
-                </a>
-            </div>
-            <div class="cv-embed-wrapper">
-                <iframe src="MRovinski_CV.pdf" class="cv-embed" title="Curriculum Vitae">
-                    <p>Your browser does not support embedded PDFs.
-                    <a href="MRovinski_CV.pdf" target="_blank">Download the CV here.</a></p>
-                </iframe>
-            </div>
+        <div id="teaching-content">
+            <p style="color: var(--text-light);">Loading&hellip;</p>
         </div>
     </main>
 
@@ -66,5 +56,38 @@
             <p class="footer-copyright">&copy; 2025 Molly Rovinski. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+    fetch('research-data.json')
+        .then(r => r.json())
+        .then(data => {
+            const container = document.getElementById('teaching-content');
+            const teaching = data.teaching || [];
+
+            if (teaching.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-light);">No teaching entries yet.</p>';
+                return;
+            }
+
+            let html = '<section class="research-section"><div class="teaching-table-wrapper"><table class="teaching-table"><thead><tr><th>Course</th><th>Institution</th><th>Role</th><th>Term(s)</th></tr></thead><tbody>';
+
+            teaching.forEach(entry => {
+                html += `
+                    <tr>
+                        <td class="course-title">${entry.course || ''}</td>
+                        <td>${entry.institution || ''}</td>
+                        <td>${entry.role || ''}</td>
+                        <td>${entry.dates || ''}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table></div></section>';
+            container.innerHTML = html;
+        })
+        .catch(() => {
+            document.getElementById('teaching-content').innerHTML = '<p style="color: var(--text-medium);">Error loading teaching data.</p>';
+        });
+    </script>
 </body>
 </html>
