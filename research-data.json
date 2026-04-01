@@ -28,7 +28,15 @@
   ],
   "worksInProgress": [],
   "conferences": [],
-  "popularArticles": [],
+  "popularArticles": [
+    {
+      "title": "The ‘El Mencho’ illusion: Drug lord Whack-a-Mole",
+      "authors": "with Abigail R. Hall",
+      "venue": "The Orange County Register",
+      "date": "March 30, 2026",
+      "url": "https://www.ocregister.com/2026/03/30/the-el-mencho-illusion-drug-lord-whack-a-mole/"
+    }
+  ],
   "teaching": [
     {
       "course": "ECON 380: Economies in Transition",
