@@ -16,10 +16,6 @@
   ],
   "workingPapers": [
     {
-      "title": "Immigration Restrictions as Non-Comprehensive Planning",
-      "authors": "with Nathan Goodman and Karla Segovia"
-    },
-    {
       "title": "Immigration Law Undermines the Rule of Law",
       "authors": "with Nathan Goodman"
     },
@@ -28,7 +24,12 @@
       "authors": "with Christopher Coyne and Abigail Hall Blanco"
     }
   ],
-  "worksInProgress": [],
+  "worksInProgress": [
+    {
+      "title": "Immigration Restrictions as Non-Comprehensive Planning",
+      "authors": "with Nathan Goodman and Karla Segovia"
+    }
+  ],
   "conferences": [
     {
       "name": "Association for Private Enterprise Education",
