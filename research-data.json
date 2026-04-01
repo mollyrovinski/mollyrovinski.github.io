@@ -28,5 +28,49 @@
   ],
   "worksInProgress": [],
   "conferences": [],
-  "popularArticles": []
+  "popularArticles": [],
+  "teaching": [
+    {
+      "course": "ECON 380: Economies in Transition",
+      "institution": "The Fund for American Studies",
+      "role": "TA to Rosolino Candela",
+      "dates": "Summer 2026, Summer 2025"
+    },
+    {
+      "course": "ECON 871: International Monetary Economics",
+      "institution": "George Mason University",
+      "role": "TA to Carlos Ramirez",
+      "dates": "Spring 2026"
+    },
+    {
+      "course": "ECON 895: Time Series Econometrics",
+      "institution": "George Mason University",
+      "role": "TA to Carlos Ramirez",
+      "dates": "Spring 2026"
+    },
+    {
+      "course": "ECON 715: Macroeconomic Theory I",
+      "institution": "George Mason University",
+      "role": "TA to Carlos Ramirez",
+      "dates": "Fall 2025"
+    },
+    {
+      "course": "ECON 309: Economic Problems and Public Policies",
+      "institution": "George Mason University",
+      "role": "TA to Michael Clemens",
+      "dates": "Spring 2026, Fall 2025"
+    },
+    {
+      "course": "ECON 103: Contemporary Microeconomic Principles (Online)",
+      "institution": "George Mason University",
+      "role": "TA to Alex Tabarrok; TA to Tyler Cowen",
+      "dates": "Spring 2025, Fall 2024"
+    },
+    {
+      "course": "ECON 103: Contemporary Microeconomic Principles",
+      "institution": "George Mason University",
+      "role": "TA to Donald Boudreaux",
+      "dates": "Spring 2025, Fall 2024"
+    }
+  ]
 }
