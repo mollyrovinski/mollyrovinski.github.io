@@ -28,19 +28,6 @@
             <h1>Research</h1>
         </header>
 
-        <section class="research-section">
-            <h2 class="section-title">Research Interests</h2>
-            <div class="publication-card">
-                <p class="hero-description">
-                    My research draws on the Austrian economics tradition to examine questions
-                    at the intersection of political economy, immigration, and foreign intervention.
-                    I am interested in how institutional frameworks and policy environments shape
-                    human movement, voluntary exchange, and the unintended consequences of
-                    state action in international affairs.
-                </p>
-            </div>
-        </section>
-
         <div id="research-content">
             <!-- Papers loaded dynamically from research-data.json -->
         </div>
@@ -71,6 +58,16 @@
     </footer>
 
     <script>
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        if (/^\d{4}-\d{2}$/.test(dateStr)) {
+            const [year, month] = dateStr.split('-');
+            return new Date(parseInt(year), parseInt(month) - 1, 1)
+                .toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+        return dateStr;
+    }
+
     // Load research data from JSON file
     fetch('research-data.json')
         .then(response => response.json())
@@ -88,7 +85,7 @@
                                 ${paper.url ? `<a href="${paper.url}" target="_blank">${paper.title}</a>` : paper.title}
                             </h3>
                             ${paper.authors ? `<p class="pub-authors">${paper.authors}</p>` : ''}
-                            ${(paper.venue || paper.date) ? `<p class="pub-venue">${[paper.venue, paper.date].filter(Boolean).join(', ')}</p>` : ''}
+                            ${(paper.venue || paper.date) ? `<p class="pub-venue">${[paper.venue, formatDate(paper.date)].filter(Boolean).join(', ')}</p>` : ''}
                             ${paper.abstract ? `
                                 <div class="pub-actions">
                                     <button class="abstract-toggle" onclick="toggleAbstract('journal-abstract-${index}')">Show Abstract</button>
@@ -159,7 +156,7 @@
                                 ${article.url ? `<a href="${article.url}" target="_blank">${article.title}</a>` : article.title}
                             </h3>
                             ${article.authors ? `<p class="pub-authors">${article.authors}</p>` : ''}
-                            ${(article.venue || article.date) ? `<p class="pub-venue">${[article.venue, article.date].filter(Boolean).join(', ')}</p>` : ''}
+                            ${(article.venue || article.date) ? `<p class="pub-venue">${[article.venue, formatDate(article.date)].filter(Boolean).join(', ')}</p>` : ''}
                         </div>
                     `;
                 });

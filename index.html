@@ -27,7 +27,6 @@
         <section class="hero-section">
             <div class="hero-content">
                 <h1 class="hero-title">Molly Rovinski</h1>
-                <p class="hero-subtitle">PhD Student in Economics &amp; Hayek Fellow, George Mason University</p>
                 <div class="hero-image">
                     <div class="image-frame">
                         <img src="rovinski_molly.png" alt="Molly Rovinski">
@@ -35,14 +34,14 @@
                 </div>
                 <div class="hero-text">
                     <p class="hero-description">
-                        I'm a PhD student in the Department of Economics at George Mason University
-                        and a Hayek Fellow at the F.A. Hayek Program for the Advanced Study of
+                        I am a PhD student in the Department of Economics at George Mason University
+                        and a Graduate Fellow with the F.A. Hayek Program for the Advanced Study of
                         Politics, Philosophy, and Economics at the Mercatus Center.
                     </p>
                     <p class="hero-description">
-                        My research draws on Austrian economics to examine questions of immigration
-                        and foreign intervention, exploring how institutional and policy environments
-                        shape human movement and international affairs.
+                        My research draws on Austrian and public choice economics to examine the
+                        consequences of government restrictions on immigration and intervention
+                        at home and abroad.
                     </p>
 
                 </div>
@@ -87,6 +86,16 @@
     </footer>
 
     <script>
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        if (/^\d{4}-\d{2}$/.test(dateStr)) {
+            const [year, month] = dateStr.split('-');
+            return new Date(parseInt(year), parseInt(month) - 1, 1)
+                .toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+        return dateStr;
+    }
+
     function toggleConfDetails(id, btn) {
         const panel = document.getElementById(id);
         const isHidden = panel.style.display === 'none';
@@ -116,7 +125,7 @@
                         <h3>${recentArticle.url
                             ? `<a href="${recentArticle.url}" target="_blank">${recentArticle.title}</a>`
                             : recentArticle.title}</h3>
-                        <p class="card-meta">${[recentArticle.venue, recentArticle.date].filter(Boolean).join(', ')}</p>
+                        <p class="card-meta">${[recentArticle.venue, formatDate(recentArticle.date)].filter(Boolean).join(', ')}</p>
                     </div>
                 `;
             }
@@ -128,7 +137,7 @@
                         <h3>${recentPopular.url
                             ? `<a href="${recentPopular.url}" target="_blank">${recentPopular.title}</a>`
                             : recentPopular.title}</h3>
-                        <p class="card-meta">${[recentPopular.venue, recentPopular.date].filter(Boolean).join(', ')}</p>
+                        <p class="card-meta">${[recentPopular.venue, formatDate(recentPopular.date)].filter(Boolean).join(', ')}</p>
                     </div>
                 `;
             }
