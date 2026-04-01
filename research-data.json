@@ -4,7 +4,9 @@
       "title": "Collective Action in the Sanctuary Movement: Polycentric Protection of Central American Asylum Seekers",
       "authors": "with Nathan Goodman and Karla Segovia",
       "venue": "Constitutional Political Economy",
-      "date": "November 2025"
+      "date": "November 2025",
+      "url": "https://link.springer.com/article/10.1007/s10602-025-09499-8",
+      "abstract": "In the 1980s and early 1990s, civil wars contributed to significant waves of migration from Central American countries such as El Salvador and Guatemala. The United States federal government, specifically the Immigration and Naturalization Service (INS), systematically denied Central American immigrants\u2019 asylum claims and deported them back to war zones. In response, over 70,000 American citizens defied United States immigration laws in order to shelter Central American immigrants, transport them across the country, and provide them with sanctuary. This Sanctuary movement was largely led by people of faith, but it involved coordination across a wide variety of religious denominations. The size and heterogeneity of the movement, combined with the fact that their goals largely constituted a public good from the standpoint of supporters, presents a puzzle. How did participants in the Sanctuary movement successfully engage in collective action without succumbing to free riding and other social dilemmas? To answer this question, we analyze the polycentric networks and nested governance arrangements within the Sanctuary movement."
     },
     {
       "title": "Fractured Families: The Unintended Consequences of Immigration Enforcement for Families",
@@ -27,8 +29,39 @@
     }
   ],
   "worksInProgress": [],
-  "conferences": [],
-  "popularArticles": [],
+  "conferences": [
+    {
+      "name": "Association for Private Enterprise Education",
+      "location": "Las Vegas, NV",
+      "date": "April 5-7, 2026",
+      "endDate": "2026-04-07",
+      "presentations": [
+        {
+          "title": "Viral Narratives: Propaganda in the Covid-19 Pandemic",
+          "coauthors": "with Abigail Hall and Christopher Coyne",
+          "session": "War, Peace, and Resistance",
+          "sessionDate": "April 6, 2026",
+          "sessionTime": "2:30 PM"
+        },
+        {
+          "title": "Immigration Restrictions as Non-Comprehensive Planning",
+          "coauthors": "with Nathan Goodman and Karla Segovia",
+          "session": "Don Lavoie's Enduring Scholarly Legacy",
+          "sessionDate": "April 6, 2026",
+          "sessionTime": "8:00 AM"
+        }
+      ]
+    }
+  ],
+  "popularArticles": [
+    {
+      "title": "The \u2018El Mencho\u2019 illusion: Drug lord Whack-a-Mole",
+      "authors": "with Abigail R. Hall",
+      "venue": "The Orange County Register",
+      "date": "March 30, 2026",
+      "url": "https://www.ocregister.com/2026/03/30/the-el-mencho-illusion-drug-lord-whack-a-mole/"
+    }
+  ],
   "teaching": [
     {
       "course": "ECON 380: Economies in Transition",

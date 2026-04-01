@@ -227,21 +227,21 @@
                 }
             }
 
-            // Popular Articles
+            // Popular Writing
             if (data.popularArticles && data.popularArticles.length > 0) {
-                html += '<section class="research-section"><h2 class="section-title">Popular Writing</h2><div class="articles-grid">';
-                data.popularArticles.forEach(article => {
+                html += '<section class="research-section"><h2 class="section-title">Popular Writing</h2>';
+                data.popularArticles.forEach((article, index) => {
                     html += `
-                        <a href="${article.url}" target="_blank" class="article-card">
-                            <h3>${article.title}</h3>
-                            <p class="article-meta">
-                                ${article.authors ? article.authors + ' | ' : ''}
-                                ${article.venue}${article.date ? ' | ' + article.date : ''}
-                            </p>
-                        </a>
+                        <div class="publication-card">
+                            <h3 class="pub-title">
+                                ${article.url ? `<a href="${article.url}" target="_blank">${article.title}</a>` : article.title}
+                            </h3>
+                            ${article.authors ? `<p class="pub-authors">${article.authors}</p>` : ''}
+                            ${(article.venue || article.date) ? `<p class="pub-venue">${[article.venue, article.date].filter(Boolean).join(', ')}</p>` : ''}
+                        </div>
                     `;
                 });
-                html += '</div></section>';
+                html += '</section>';
             }
 
             container.innerHTML = html;
