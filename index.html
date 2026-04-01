@@ -26,14 +26,14 @@
     <main class="main-container">
         <section class="hero-section">
             <div class="hero-content">
+                <h1 class="hero-title">Molly Rovinski</h1>
+                <p class="hero-subtitle">PhD Student in Economics &amp; Hayek Fellow, George Mason University</p>
                 <div class="hero-image">
                     <div class="image-frame">
                         <img src="rovinski_molly.png" alt="Molly Rovinski">
                     </div>
                 </div>
                 <div class="hero-text">
-                    <h1 class="hero-title">Molly Rovinski</h1>
-                    <p class="hero-subtitle">PhD Student in Economics &amp; Hayek Fellow, George Mason University</p>
                     <p class="hero-description">
                         I'm a PhD student in the Department of Economics at George Mason University
                         and a Hayek Fellow at the F.A. Hayek Program for the Advanced Study of
@@ -52,7 +52,7 @@
         </section>
 
         <section class="recent-work-section">
-            <h2 class="home-section-heading">See my recent work:</h2>
+            <h2 class="home-section-heading">See My Recent Work:</h2>
             <div class="recent-work-grid" id="recent-work-grid">
                 <p style="color: var(--text-light);">Loading&hellip;</p>
             </div>
@@ -88,37 +88,13 @@
         </div>
     </footer>
 
-    <!-- Conferences Floating Tab -->
-    <button id="conferences-float-btn" class="conferences-float-btn" onclick="openConferencesPanel()" aria-label="Conferences I'll be at — open panel" hidden>
-        Conferences I'll be at
-    </button>
-
-    <!-- Conferences Side Panel -->
-    <div id="conferences-overlay" class="side-panel-overlay" onclick="closeConferencesPanel()"></div>
-    <aside id="conferences-side-panel" class="side-panel" role="dialog" aria-modal="true" aria-label="Conferences">
-        <div class="side-panel-header">
-            <span class="side-panel-title">Conferences</span>
-            <button class="side-panel-close" onclick="closeConferencesPanel()" aria-label="Close">&times;</button>
-        </div>
-        <div class="side-panel-body">
-            <div class="conferences-list" id="conferences-panel-list"></div>
-        </div>
-    </aside>
-
     <script>
-    function openConferencesPanel() {
-        document.getElementById('conferences-side-panel').classList.add('is-open');
-        document.getElementById('conferences-overlay').classList.add('is-open');
-        document.body.style.overflow = 'hidden';
+    function toggleConfDetails(id, btn) {
+        const panel = document.getElementById(id);
+        const isHidden = panel.style.display === 'none';
+        panel.style.display = isHidden ? 'block' : 'none';
+        btn.textContent = isHidden ? 'Less info' : 'More info';
     }
-    function closeConferencesPanel() {
-        document.getElementById('conferences-side-panel').classList.remove('is-open');
-        document.getElementById('conferences-overlay').classList.remove('is-open');
-        document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeConferencesPanel();
-    });
 
     fetch('research-data.json')
         .then(r => r.json())
@@ -151,7 +127,9 @@
                 recentHtml += `
                     <div class="recent-work-card">
                         <div class="card-type">Popular Writing</div>
-                        <h3><a href="${recentPopular.url}" target="_blank">${recentPopular.title}</a></h3>
+                        <h3>${recentPopular.url
+                            ? `<a href="${recentPopular.url}" target="_blank">${recentPopular.title}</a>`
+                            : recentPopular.title}</h3>
                         <p class="card-meta">${[recentPopular.venue, recentPopular.date].filter(Boolean).join(', ')}</p>
                     </div>
                 `;
@@ -168,72 +146,38 @@
                 const confSection = document.getElementById('upcoming-conf-section');
                 const confList = document.getElementById('upcoming-conf-list');
                 let confHtml = '';
-                upcoming.forEach(c => {
+                upcoming.forEach((c, idx) => {
+                    const hasPresentations = c.presentations && c.presentations.length > 0;
+                    let presHtml = '';
+                    if (hasPresentations) {
+                        c.presentations.forEach(p => {
+                            presHtml += `
+                                <div class="conf-pres-item">
+                                    <div class="conf-pres-title">${p.title || ''}${p.coauthors ? ` <span class="conf-pres-coauthors">${p.coauthors}</span>` : ''}</div>
+                                    ${p.session ? `<div class="conf-pres-session">${p.session}</div>` : ''}
+                                    ${(p.sessionDate || p.sessionTime) ? `<div class="conf-pres-time">${[p.sessionDate, p.sessionTime].filter(Boolean).join(', ')}</div>` : ''}
+                                </div>
+                            `;
+                        });
+                    }
                     confHtml += `
                         <div class="upcoming-conf-item">
                             <span class="upcoming-conf-date">${c.date || ''}</span>
                             <div class="upcoming-conf-details">
                                 <div class="upcoming-conf-name">${c.name}</div>
                                 ${c.location ? `<div class="upcoming-conf-location">${c.location}</div>` : ''}
+                                ${hasPresentations ? `
+                                    <button class="conf-more-btn" onclick="toggleConfDetails('conf-details-${idx}', this)">More info</button>
+                                    <div class="conf-details-panel" id="conf-details-${idx}" style="display:none;">
+                                        ${presHtml}
+                                    </div>
+                                ` : ''}
                             </div>
                         </div>
                     `;
                 });
                 confList.innerHTML = confHtml;
                 confSection.style.display = '';
-            }
-
-            // Floating conferences panel (all conferences)
-            if (data.conferences && data.conferences.length > 0) {
-                const past = data.conferences
-                    .filter(c => !c.endDate || new Date(c.endDate) < today)
-                    .sort((a, b) => new Date(b.endDate || 0) - new Date(a.endDate || 0));
-
-                function buildConfCard(conf) {
-                    const confDate = conf.date || conf.dates || '';
-                    let html = `
-                        <div class="conference-item">
-                            <div class="conference-main">
-                                <span class="conference-name">${conf.name}</span>
-                                ${conf.role ? `<span class="conference-role">${conf.role}</span>` : ''}
-                            </div>
-                            <div class="conference-meta">
-                                ${conf.location ? `<span class="conference-location">${conf.location}</span>` : ''}
-                                ${conf.location && confDate ? `<span class="conference-sep">&middot;</span>` : ''}
-                                ${confDate ? `<span class="conference-date">${confDate}</span>` : ''}
-                            </div>
-                    `;
-                    if (conf.presentations && conf.presentations.length > 0) {
-                        html += `<div class="conf-presentations">`;
-                        conf.presentations.forEach(p => {
-                            html += `
-                                <div class="conf-pres-item">
-                                    <div class="conf-pres-title">${p.title || ''}${p.coauthors ? `<span class="conf-pres-coauthors"> ${p.coauthors}</span>` : ''}</div>
-                                    ${p.session ? `<div class="conf-pres-session">${p.session}</div>` : ''}
-                                    ${(p.sessionDate || p.sessionTime) ? `<div class="conf-pres-time">${[p.sessionDate, p.sessionTime].filter(Boolean).join(', ')}</div>` : ''}
-                                </div>
-                            `;
-                        });
-                        html += `</div>`;
-                    }
-                    html += `</div>`;
-                    return html;
-                }
-
-                const panelList = document.getElementById('conferences-panel-list');
-                let panelHtml = '';
-                if (upcoming.length > 0) {
-                    panelHtml += `<h3 class="panel-section-heading">Upcoming</h3><div class="conferences-list">`;
-                    upcoming.forEach(c => { panelHtml += buildConfCard(c); });
-                    panelHtml += `</div>`;
-                }
-                if (past.length > 0) {
-                    panelHtml += `<h3 class="panel-section-heading">Previously at</h3><div class="conferences-list">`;
-                    past.forEach(c => { panelHtml += buildConfCard(c); });
-                    panelHtml += `</div>`;
-                }
-                panelList.innerHTML = panelHtml;
-                document.getElementById('conferences-float-btn').hidden = false;
             }
         });
     </script>

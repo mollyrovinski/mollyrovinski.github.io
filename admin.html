@@ -768,6 +768,16 @@
     </main>
 
     <script>
+    // UTF-8 safe base64 decode (atob alone mangles curly quotes and other non-ASCII)
+    function decodeBase64UTF8(base64) {
+        const binStr = atob(base64);
+        const bytes = new Uint8Array(binStr.length);
+        for (let i = 0; i < binStr.length; i++) {
+            bytes[i] = binStr.charCodeAt(i);
+        }
+        return new TextDecoder('utf-8').decode(bytes);
+    }
+
     // Configuration
     const GITHUB_REPO = 'mollyrovinski/mollyrovinski.github.io';
     const GITHUB_BRANCH = 'main';
@@ -1071,7 +1081,7 @@
             fileSha = fileData.sha;
 
             // Parse and update content - find entry by title/name
-            const currentContent = JSON.parse(atob(fileData.content));
+            const currentContent = JSON.parse(decodeBase64UTF8(fileData.content));
             const entryIndex = type === 'conferences'
                 ? currentContent[type]?.findIndex(e => e.name === title)
                 : currentContent[type]?.findIndex(e => e.title === title);
@@ -1376,7 +1386,7 @@
             const fileData = await fileResponse.json();
             fileSha = fileData.sha;
 
-            const currentContent = JSON.parse(atob(fileData.content));
+            const currentContent = JSON.parse(decodeBase64UTF8(fileData.content));
             const { type, entry } = buildEntry();
 
             if (editMode) {
@@ -1639,7 +1649,7 @@
             if (!fileResponse.ok) throw new Error('Failed to fetch research data from GitHub');
 
             const fileData = await fileResponse.json();
-            const currentContent = JSON.parse(atob(fileData.content));
+            const currentContent = JSON.parse(decodeBase64UTF8(fileData.content));
             if (!currentContent.teaching) currentContent.teaching = [];
 
             if (teachingEditMode) {
@@ -1711,7 +1721,7 @@
             if (!fileResponse.ok) throw new Error('Failed to fetch research data from GitHub');
 
             const fileData = await fileResponse.json();
-            const currentContent = JSON.parse(atob(fileData.content));
+            const currentContent = JSON.parse(decodeBase64UTF8(fileData.content));
             const idx = (currentContent.teaching || []).findIndex(e => e.course === entry.course);
             if (idx === -1) throw new Error('Entry not found. Please refresh and try again.');
             currentContent.teaching.splice(idx, 1);
