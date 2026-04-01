@@ -427,6 +427,7 @@ body {
 /* Contact button */
 .hero-actions {
     margin-top: 2rem;
+    text-align: center;
 }
 
 .contact-btn {
