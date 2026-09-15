@@ -112,9 +112,10 @@
                             ${paper.authors ? `<p class="pub-authors">${paper.authors}</p>` : ''}
                             ${paper.note ? `
                                 <p class="pub-note">
-                                    ${paper.note.link ?
-                                        paper.note.text.replace(paper.note.link.text, `<a href="${paper.note.link.url}" target="_blank">${paper.note.link.text}</a>`)
-                                        : paper.note.text}
+                                    ${typeof paper.note === 'string' ? paper.note :
+                                        (paper.note.link ?
+                                            paper.note.text.replace(paper.note.link.text, `<a href="${paper.note.link.url}" target="_blank">${paper.note.link.text}</a>`)
+                                            : paper.note.text)}
                                 </p>
                             ` : ''}
                             ${paper.abstract ? `
