@@ -37,6 +37,20 @@
   ],
   "conferences": [
     {
+      "name": "Markets and Society",
+      "location": "Falls Church, Virginia",
+      "date": "October 23-26, 2026",
+      "endDate": "2026-10-26",
+      "presentations": [
+        {
+          "title": "Building from Abroad: Mexican Hometown Associations and Collective Good Provisions Across Borders",
+          "session": "Pathways to Peace: Rentseeking, Trade, and Migration",
+          "sessionDate": "October 25, 2026",
+          "sessionTime": "1:00 PM"
+        }
+      ]
+    },
+    {
       "name": "Association for Private Enterprise Education",
       "location": "Las Vegas, NV",
       "date": "April 5-7, 2026",
