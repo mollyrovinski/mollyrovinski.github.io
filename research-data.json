@@ -37,6 +37,21 @@
   ],
   "conferences": [
     {
+      "name": "Southern Economic Association 96th Annual Meeting",
+      "location": "Houston, TX",
+      "date": "November 21-23,2026",
+      "endDate": "2026-11-23",
+      "presentations": [
+        {
+          "title": "Fractured Families: The Unintended Consequences of Immigration Enforcement for Families",
+          "coauthors": "with Nathan Goodman and Karla Segovia",
+          "session": "The Family in a Self-Governing Society [Allied-SDAE]",
+          "sessionDate": "November 22, 2026",
+          "sessionTime": "2:00 PM"
+        }
+      ]
+    },
+    {
       "name": "Markets and Society",
       "location": "Falls Church, Virginia",
       "date": "October 23-26, 2026",
