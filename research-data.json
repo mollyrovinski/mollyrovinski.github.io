@@ -18,6 +18,11 @@
   ],
   "workingPapers": [
     {
+      "title": "Immigration Restrictions as Non-Comprehensive Planning",
+      "authors": "with Nathan Goodman and Karla Segovia",
+      "note": "Under Review"
+    },
+    {
       "title": "The Convergence Effect: AI and the Political Economy of State Capacities",
       "authors": "with Christopher Coyne and Abigail Hall Blanco",
       "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7447143",
@@ -29,12 +34,7 @@
       "authors": "with Christopher Coyne and Abigail Hall Blanco"
     }
   ],
-  "worksInProgress": [
-    {
-      "title": "Immigration Restrictions as Non-Comprehensive Planning",
-      "authors": "with Nathan Goodman and Karla Segovia"
-    }
-  ],
+  "worksInProgress": [],
   "conferences": [
     {
       "name": "Southern Economic Association 96th Annual Meeting",
